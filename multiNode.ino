@@ -38,8 +38,8 @@ To use this code you will need the following dependancies:
 
 
 /************* MQTT TOPICS (change these topics as you wish)  **************************/
-#define bed_state_topic "flamingotter/bedSensor1"
-#define bed_set_topic "flamingotter/bedSensor1/set"
+#define bed_state_topic "flamingotter/multiNode1"
+#define bed_set_topic "flamingotter/multiNode1/set"
 
 #define bed_led_state_topic "flamingotter/bedLed1"
 #define bed_led_set_topic "flamingotter/bedLed1/set"
