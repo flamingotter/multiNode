@@ -38,11 +38,11 @@ To use this code you will need the following dependancies:
 
 
 /************* MQTT TOPICS (change these topics as you wish)  **************************/
-#define bed_state_topic "flamingotter/multiNode1"
-#define bed_set_topic "flamingotter/multiNode1/set"
+#define bed_state_topic "home/test1"
+#define bed_set_topic "home/test1/set"
 
-#define bed_led_state_topic "flamingotter/bedLed1"
-#define bed_led_set_topic "flamingotter/bedLed1/set"
+#define bed_led_state_topic "home/test1Led1"
+#define bed_led_set_topic "home/test1Led1/set"
 
 const char* on_cmd = "ON";
 const char* off_cmd = "OFF";
@@ -53,7 +53,7 @@ String oldeffectString = "solid";
 
 
 /**************************** FOR OTA **************************************************/
-#define SENSORNAME "bedNode"
+#define SENSORNAME "testNode"
 #define OTApassword "password123" // change this to whatever password you want to use when you upload OTA
 int OTAport = 8266;
 
@@ -61,10 +61,10 @@ int OTAport = 8266;
 
 /**************************** PIN DEFINITIONS ********************************************/
 #define RIRPIN    D4
-#define RIRPIN1   D5
+//#define RIRPIN1   D5
 #define DHTPIN    D7
 #define DHTTYPE   DHT22
-//#define LDRPIN    A0
+#define LDRPIN    A0
 
 
 /*********************************** FastLED Definitions ********************************/
@@ -481,12 +481,12 @@ void sendBedState() {
   JsonObject& root = jsonBuffer.createObject();
 
   root["mo"] = (String)motionStatus;
-  root["moCnt"] = (String)rirMotionCounter;
-  root["lTrig"] = (String)longTrig;
-  root["mo1"] = (String)motionStatus1;
-  root["moCnt1"] = (String)rirMotionCounter1;
-  root["lTrig1"] = (String)longTrig1;
-  //root["ldr"] = (String)LDR;
+  //root["moCnt"] = (String)rirMotionCounter;
+  //root["lTrig"] = (String)longTrig;
+  //root["mo1"] = (String)motionStatus1;
+  //root["moCnt1"] = (String)rirMotionCounter1;
+  //root["lTrig1"] = (String)longTrig1;
+  root["ldr"] = (String)LDR;
   root["temp"] = (String)tempValue;
   root["hum"] = (String)humValue;
   //root["heatIdx"] = (String)calculateHeatIndex(humValue, tempValue);
@@ -753,13 +753,13 @@ void sensor() {
 
   delay(100);
 
-/****LDR CODE***
+/****LDR CODE***/
   int newLDR = analogRead(LDRPIN);
 
   if (checkBoundSensor(newLDR, LDR, diffLDR)) {
     LDR = newLDR;
     sendBedState();
-  }*/
+  }
 }
 
 
