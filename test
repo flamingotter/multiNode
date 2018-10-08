@@ -67,7 +67,7 @@ const int bluePin = D3;
 float ldrValue;
 int LDR;
 float calcLDR;
-float diffLDR = 25;
+float diffLDR = 10;
 
 float diffTEMP = 0.2;
 float tempValue;
