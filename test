@@ -22,6 +22,8 @@ To use this code you will need the following dependancies:
 #include <DHT.h>
 #include <ESP8266mDNS.h>
 #include <ESP8266WiFi.h>
+#define FASTLED_ALLOW_INTERRUPTS 0
+#include "FastLED.h"
 
 
 
@@ -52,15 +54,20 @@ int OTAport = 8266;
 
 
 /**************************** PIN DEFINITIONS ********************************************/
-const int redPin = D1;
-const int greenPin = D2;
-const int bluePin = D3;
-
 #define PIRPIN    D5
-//#define RIRPIN1   D5
 #define DHTPIN    D7
 #define DHTTYPE   DHT22
 #define LDRPIN    A0
+
+
+
+/*********************************** FastLED Definitions ********************************/
+#define NUM_LEDS    2
+#define DATA_PIN    D1
+//#define CLOCK_PIN 5
+#define CHIPSET     WS2812
+#define COLOR_ORDER GRB
+
 
 
 /**************************** SENSOR DEFINITIONS *******************************************/
@@ -68,6 +75,8 @@ float ldrValue;
 int LDR;
 float calcLDR;
 float diffLDR = 10;
+
+DHT dht(DHTPIN, DHTTYPE);
 
 float diffTEMP = 0.2;
 float tempValue;
@@ -79,6 +88,9 @@ int pirValue;
 int pirStatus;
 String motionStatus;
 
+
+
+/*****************************GLOBAL DEFINITIONS***************************************/
 char message_buff[100];
 
 int calibrationTime = 0;
@@ -87,41 +99,8 @@ const int BUFFER_SIZE = 300;
 
 #define MQTT_MAX_PACKET_SIZE 512
 
-
-/******************************** GLOBALS for fade/flash *******************************/
-byte red = 255;
-byte green = 255;
-byte blue = 255;
-byte brightness = 255;
-
-byte realRed = 0;
-byte realGreen = 0;
-byte realBlue = 0;
-
-bool stateOn = false;
-
-bool startFade = false;
-unsigned long lastLoop = 0;
-int transitionTime = 0;
-bool inFade = false;
-int loopCount = 0;
-int stepR, stepG, stepB;
-int redVal, grnVal, bluVal;
-
-bool flash = false;
-bool startFlash = false;
-int flashLength = 0;
-unsigned long flashStartTime = 0;
-byte flashRed = red;
-byte flashGreen = green;
-byte flashBlue = blue;
-byte flashBrightness = brightness;
-
-
-
 WiFiClient espClient;
 PubSubClient client(espClient);
-DHT dht(DHTPIN, DHTTYPE);
 
 
 
@@ -134,8 +113,7 @@ void setup() {
   pinMode(DHTPIN, INPUT);
   pinMode(LDRPIN, INPUT);
 
-  Serial.begin(115200);
-  delay(10);
+  delay(1000);
 
   ArduinoOTA.setPort(OTAport);
 
